@@ -1,0 +1,20 @@
+<div style=" display: -webkit-flex;
+ -webkit-flex-wrap: wrap;
+ flex-wrap:wrap;
+    display: flex;
+    width: 100%;">
+<% for n in  1..@num %>
+<div style="width:25%">
+<% n = ('0' + n.to_s) if n < 10%>
+<div style="text-align:center">
+<%= wicked_pdf_image_tag "http://www.barcode-generator.org/zint/api.php?bc_number=20&bc_data=#{n}"%>
+</div>
+<!-- <div style="text-align:center;margin-top:-10px">
+<%=n%>
+</div> -->
+</div>
+<!-- <span style="margin-right:10px;margin-top:100px;" max-width="2px">
+ id:<%=n%></span> -->
+<% end %>
+</div>
+
