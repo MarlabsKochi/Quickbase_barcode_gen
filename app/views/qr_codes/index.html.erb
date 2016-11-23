@@ -1,20 +1,72 @@
-<div style=" display: -webkit-flex;
- -webkit-flex-wrap: wrap;
- flex-wrap:wrap;
-    display: flex;
-    width: 100%;">
-<% for n in  1..@num %>
-<div style="width:25%">
-<% n = ('0' + n.to_s) if n < 10%>
-<div style="text-align:center">
-<%= wicked_pdf_image_tag "http://www.barcode-generator.org/zint/api.php?bc_number=20&bc_data=#{n}"%>
-</div>
-<!-- <div style="text-align:center;margin-top:-10px">
-<%=n%>
-</div> -->
-</div>
-<!-- <span style="margin-right:10px;margin-top:100px;" max-width="2px">
- id:<%=n%></span> -->
+<!-- <div style=" display: -webkit-flex;
+   -webkit-flex-wrap: wrap;
+   flex-wrap:wrap;
+      display: flex;
+      width: 100%;">
+
+  <%= @num%>
+  </div>
+   -->
+
+<!-- <link rel="stylesheet" href="assets/stylesheets/barcode-3.css" type="text/css"> -->
+<!-- <link rel="stylesheet" href="assets/fonts/stylesheet.css" type="text/css"> -->
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Oswald:300,400" rel="stylesheet">
+
+
+<div style=" display: -webkit-flex; 
+     -webkit-flex-wrap: wrap;
+     flex-wrap:wrap;
+      display: flex;
+      background-color: #ffffff;
+      width: 100%; padding: 30px 30px">
+      
+
+
+    <% @num.each do |num_value| %>
+        <div style="width:33%;  ">
+
+            <div class="fedex-main-box-3">
+
+                <div class="barcode-3-box-header">
+                    <h1><%= num_value.xpath('retek_description').children.text %></h1>
+                </div>
+
+                <!-- <h3> <%= num_value.xpath('retek_description').children.text %></h3> -->
+
+                <div class="barcode-3-box-content">
+                    <div class="barcode-3-box-left">
+                        <div class="gap-3"></div>
+
+                        <h6><%= num_value.xpath('manufacturer').children.text %></h6>
+
+                        <h6><%= num_value.xpath('retek').children.text %><strong>e <%= num_value.xpath('epro').children.text %></strong></h6>
+
+                        <h6><%= num_value.xpath('upc').children.text %><strong><%= num_value.xpath('ims_prod_group').children.text%> &#9633; </strong></h6>
+
+                        <div class="fedex-barcode-small">
+                            <%= image_tag "http://www.barcode-generator.org/zint/api.php?bc_number=20&bc_data=#{num_value.xpath('upc').children.text}"%>
+                        </div>
+                    </div>
+                    <div class="barcode-3-box-left">
+                        <h1><sup>$ </sup><%= num_value.xpath('retail').children.text %> </h1>
+
+                        <h3> <% unless num_value.xpath('unit_retail').children.text.blank? %>
+    $<%= num_value.xpath('unit_retail').children.text %> 
+    <% end %>
+    </h3>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
 <% end %>
+<br>
+<div>
+  <%=paginate(@kaminari_ary, {total_pages: @total_pages, current_page: params[:page].to_i, per_page: 24})%>
+</div>
+
 </div>
 

@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'qr_codes#index'
+  get 'qr_codes/export_to_pdf' => 'qr_codes#export_to_pdf'
+
+
+  get 'new_table' => 'new_table#newtable'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,25 +1,48 @@
 class QrCodesController < ApplicationController
-	require "rest-client"
-    require "nokogiri"
+		
 	def index
-	# response = RestClient.post 'https://marlabsdev.quickbase.com/db/bkuuwumss?a=API_GetRecordInfo&rid=1
-	# &ticket=8_bkuxg37xp_b2t8td_h6jf_a_dshpzw9c8ycs67c9jy7nqdi8sqkatta335dsrkse6ck34ckjbvzs4u&apptoken=dfaa2irct2yuxm2cep65c9c3am3', :content_type => :xml 
-	# doc = Nokogiri::XML.parse(response)
-	# src = doc.xpath("//value").first.children.text
-	api_url = 'https://marlabsdev.quickbase.com/db/bkuuwumss?a=API_GetNumRecords'
-	ticket = '8_bk9tsmqnw_b24dps_h6jf_a_cqmxsgidc2h6gcdhpxpm92zzwd5ctiv7eacgc3k95b2etiezrt6yt8'
-	token = 'dfaa2irct2yuxm2cep65c9c3am3'
-	response = RestClient.post api_url + '&ticket=' + ticket + '&apptoken=' + token, 
-	            :content_type => :xml 
-	doc = Nokogiri::XML.parse(response)
-	@num = doc.xpath("//num_records").children.text.to_i
-	#   pdf = WickedPdf.new.pdf_from_string(
- #                        render_to_string(
- #                          template: '/qr_codes/index.pdf.erb'))
- #  send_data(pdf,
- #            filename: 'file_name.pdf',
- #            type: 'application/pdf',
- #            disposition: 'attachment')
-#render :pdf => 'index'
+		params[:page] ||= 1
+		offset = (params[:page].to_i - 1) * 24
+    api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={158.XEX.'ePro is zero'}&options=num-24.nosort.skp-#{offset}"
+    count_api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQueryCount&query={158.XEX.'ePro is zero'}"
+		token = 'b26njx_9gj_dt9cz7jd4kpymgcq8anydqwjxw7'
+
+		@response = RestClient.post api_url + '&usertoken=' + token , 
+	            :content_type => :xml
+	      response_count = RestClient.post count_api_url + '&usertoken=' + token , 
+	            :content_type => :xml
+    doc_count = Nokogiri::XML.parse(response_count)
+    total_count = doc_count.xpath("/qdbapi").xpath('numMatches').children.text.to_i
+    @total_pages = total_count/24 + 1 if (total_count % 24) > 0
+
+		doc = Nokogiri::XML.parse(@response)
+
+		@num = doc.xpath("/qdbapi/record")
+		@kaminari_ary = Kaminari.paginate_array(@num).page(params[:page]).per(24)
+		
+		respond_to do |format|
+      format.html
+      format.pdf do
+	    pdf = render_to_string :pdf => 'test',
+	                     layout: 'application.html.erb',
+	                     template: 'qr_codes/index.html.erb'
+	    end
+    end
 	end
+
+	def export_to_pdf
+		api_url = 'https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={158.EX.''}'
+		token = 'b26njx_9gj_dt9cz7jd4kpymgcq8anydqwjxw7'
+		@response = RestClient.post api_url + '&usertoken=' + token , :content_type => :xml
+		doc = Nokogiri::XML.parse(@response)
+		@num=doc.xpath("/qdbapi/record").first(100)
+		respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = Prawn::Document.new
+        send_data pdf.render, filename: 'report_pdf.pdf', type: 'application/pdf'
+      end
+    end
+	end
+	
 end
