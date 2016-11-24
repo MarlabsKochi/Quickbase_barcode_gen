@@ -27,7 +27,7 @@ gem "rest-client"
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'kaminari'
-gem 'prawn'
+gem "paperclip", "~> 5.0.0"
 #gem "twitter-bootstrap-rails"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -51,4 +51,3 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
 end
-

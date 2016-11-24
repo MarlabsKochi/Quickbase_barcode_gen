@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total_count: 1
+  api_url: MyString
+  status: MyString
+
+two:
+  total_count: 1
+  api_url: MyString
+  status: MyString
