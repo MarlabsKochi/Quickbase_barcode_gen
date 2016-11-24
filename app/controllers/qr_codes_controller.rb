@@ -7,7 +7,6 @@ class QrCodesController < ApplicationController
 		api_url_with_limit = api_url + "&options=num-24.nosort.skp-#{offset}"
     count_api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQueryCount&query={158.XEX.'ePro is zero'}"
 		token = 'b26njx_9gj_dt9cz7jd4kpymgcq8anydqwjxw7'
-
 		@response = RestClient.post api_url_with_limit + '&usertoken=' + token ,
 	            :content_type => :xml
 	      response_count = RestClient.post count_api_url + '&usertoken=' + token ,
@@ -15,19 +14,9 @@ class QrCodesController < ApplicationController
     doc_count = Nokogiri::XML.parse(response_count)
     @total_count = doc_count.xpath("/qdbapi").xpath('numMatches').children.text.to_i
     @total_pages = @total_count/24 + 1 if (@total_count % 24) > 0
-
 		doc = Nokogiri::XML.parse(@response)
-
 		@qr_codes = doc.xpath("/qdbapi/record")
 		@kaminari_ary = Kaminari.paginate_array(@qr_codes).page(params[:page]).per(24)
-
-		respond_to do |format|
-      format.html
-      format.pdf do
-	    pdf = render_to_string :pdf => 'test', layout: 'application.html.erb',
-				template: 'qr_codes/index.html.erb'
-	    end
-    end
 	end
 
 	def export_to_pdf
