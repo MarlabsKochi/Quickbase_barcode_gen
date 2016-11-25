@@ -16,7 +16,14 @@
 
 <%=paginate(@kaminari_ary, {total_pages: @total_pages, current_page: params[:page].to_i, per_page: 24})%>
 
-<%= link_to "Export", qr_codes_export_to_pdf_path(total_count: @total_count), remote: true %>
+<div class="float_left">
+  <%= link_to "Export", export_to_pdf_qr_codes_path(total_count: @total_count), remote: true %>
+</div>
+
+<div class="float_right">
+  <%= link_to "Download Page", download_reports_path %>
+</div>
+
 
 <div id="dialog" class="hide">
   <p> Please find the exported pdf in the dowloads page </p>

@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  resources :qr_codes, only: :index do
+    collection do
+      get :export_to_pdf
+      get :download_report
+    end
+  end
   root 'qr_codes#index'
-  get 'qr_codes/export_to_pdf' => 'qr_codes#export_to_pdf'
 
+  resources :download_reports, only: :index
 
-  get 'new_table' => 'new_table#newtable'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

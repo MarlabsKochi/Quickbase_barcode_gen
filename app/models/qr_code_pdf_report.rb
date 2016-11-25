@@ -1,4 +1,9 @@
 class QrCodePdfReport < ActiveRecord::Base
+
+  # Variables
+  COMPLETED = 'COMPLETED'
+  PENDING = 'PENDING'
+
   has_attached_file :pdf_file
   validates_attachment_content_type :pdf_file,
     content_type: ['application/pdf'],
