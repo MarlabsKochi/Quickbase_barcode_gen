@@ -10,7 +10,7 @@ class PdfGenerator
 
   def generate_pdf
     token = 'b26njx_9gj_dt9cz7jd4kpymgcq8anydqwjxw7'
-    n = find_iteration
+    n = find_iteration || 1
     destination_path = create_temp_folder
     1.upto(n) do |n|
       offset = (n - 1) * 24

@@ -3,9 +3,9 @@ class QrCodesController < ApplicationController
 	def index
 		params[:page] ||= 1
 		offset = (params[:page].to_i - 1) * 24
-    api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={6.lt.'100'}"
+    api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={6.LT.'1000'}"
 		api_url_with_limit = api_url + "&options=num-24.nosort.skp-#{offset}"
-    count_api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQueryCount&query={6.lt.'100'}"
+    count_api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQueryCount&query={6.LT.'1000'}"
 		token = 'b26njx_9gj_dt9cz7jd4kpymgcq8anydqwjxw7'
 		@response = RestClient.post api_url_with_limit + '&usertoken=' + token ,
 	            :content_type => :xml
@@ -20,7 +20,7 @@ class QrCodesController < ApplicationController
 	end
 
 	def export_to_pdf
-		api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={6.lt.'100'}"
+		api_url = "https://fedex.quickbase.com/db/bmbtc9fjh?a=API_DoQuery&query={6.LT.'1000'}"
 		pdf_report_record = find_pdf_report_record(api_url)
 		if pdf_report_record.status == QrCodePdfReport::COMPLETED
 			@url = download_report_qr_codes_path(id: pdf_report_record.id)

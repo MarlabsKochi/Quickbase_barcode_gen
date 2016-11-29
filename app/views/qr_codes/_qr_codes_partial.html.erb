@@ -1,6 +1,8 @@
 <div class="listing_qrcodes">
 <% qr_codes.each do |num_value| %>
-  <div style="width:33%;" class="content-box">
+  <div style="margin:0 auto;" class="content-box">
+    <div align="center">
+
     <div class="fedex-main-box-3">
       <div class="barcode-3-box-header">
         <h1><%= num_value.xpath('retek_description').children.text %></h1>
@@ -8,18 +10,37 @@
       <div class="barcode-3-box-content">
         <div class="barcode-3-box-left">
           <div class="gap-3"></div>
+          <div class="barcode-div">
             <h6><%= num_value.xpath('manufacturer').children.text %></h6>
-              <h6><%= num_value.xpath('retek').children.text %>
-                <strong>e<%= num_value.xpath('epro').children.text %></strong>
-              </h6>
-              <h6><%= num_value.xpath('upc').children.text %>
-                <strong><%= num_value.xpath('ims_prod_group').children.text%>
-                  &#9633;
-                </strong>
-              </h6>
-              <div class="fedex-barcode-small">
-                <%= image_tag "http://www.barcode-generator.org/zint/api.php?bc_number=20&bc_data=#{num_value.xpath('upc').children.text}"%>
+          </div>
+          <div class="barcode-div">
+            <div class="barcode-3-box-left fix-heading-1">
+              <h6><%= num_value.xpath('retek').children.text %></h6>
+            </div>
+             <div class="barcode-3-box-left">
+               <h6>
+                 <strong>
+                   <%= num_value.xpath('epro').children.text %>
+                 </strong>
+               </h6>
+             </div>
+          </div>
+            <div class="barcode-div">
+              <div class="barcode-3-box-left">
+                <h6><%= num_value.xpath('upc').children.text %></h6>
               </div>
+              <div class="barcode-3-box-left fix-heading-2">
+                <h6>
+                  <strong>
+                    <%= num_value.xpath('ims_prod_group').children.text%>
+                    <span>&#9633;</span>
+                  </strong>
+              </h6>
+              </div>
+            </div>
+            <div class="fedex-barcode-small">
+              <%= image_tag "http://www.barcode-generator.org/zint/api.php?bc_number=20&bc_data=#{num_value.xpath('upc').children.text}"%>
+            </div>
         </div>
         <div class="barcode-3-box-left">
           <h1>
@@ -34,6 +55,9 @@
         </div>
       </div>
     </div>
+
+  </div>
+
   </div>
   <% end %>
 </div>

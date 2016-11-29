@@ -1,0 +1,31 @@
+
+<%= link_to 'Back', root_path %>
+
+<div class="listing_qrcodes">
+  <table class="table-fill">
+      <thead>
+          <tr>
+          <th class="text-left"> api_url</th>
+          <th class="text-left"> status</th>
+          <th class="text-left"> pdf_file_file_name</th>
+          <th class="text-left"> pdf_file_content_type</th>
+          <th class="text-left"> DOWLOAD</th>
+          </tr>
+      </thead>
+      <tbody class="table-hover">
+        <% @pdf_reports.each do |report| %>
+          <tr>
+              <td class="text-left"><%= report.api_url.split('/')[-1] %></td>
+              <td class="text-left"><%= report.status %></td>
+              <td class="text-left"><%= display_file_name(report)%></td>
+              <td class="text-left"><%= display_file_type(report)%></td>
+              <td class="text-left">
+                <% if report.status == QrCodePdfReport::COMPLETED %>
+                  <%= link_to 'Download', download_report_qr_codes_path(id: report.id)%>
+                <% end %>
+              </td>
+          </tr>
+        <%end%>
+      </tbody>
+  </table>
+</div>
